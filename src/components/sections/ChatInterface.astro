@@ -1,0 +1,43 @@
+---
+import { POPULAR_TOPICS } from '../../lib/constants';
+---
+
+<section id="tax-guides" class="py-8 md:py-16">
+  <div class="container mx-auto px-4">
+    <h2 class="text-2xl md:text-3xl font-bold mb-6">AI Tax Assistant</h2>
+    <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
+      <div class="mb-6">
+        <h3 class="text-xl md:text-2xl font-bold text-primary mb-3">Ask Our AI Tax Expert</h3>
+        <p class="text-sm md:text-base text-gray-600 mb-6">
+          Get instant answers to your cryptocurrency tax questions. Our AI assistant is trained on the latest regulations
+          and can help you understand your tax obligations.
+        </p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {POPULAR_TOPICS.map(topic => (
+            <button 
+              class="text-left bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              onclick={`window.dispatchEvent(new CustomEvent('askTopic', { detail: '${topic.query}' }))`}
+            >
+              <h4 class="text-sm font-semibold mb-1">{topic.title}</h4>
+              <p class="text-xs text-gray-600">{topic.description}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+window.addEventListener('askTopic', (e: CustomEvent) => {
+  const chatInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+  if (chatInput) {
+    chatInput.value = e.detail;
+    const form = chatInput.closest('form');
+    if (form) {
+      form.dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+  }
+});
+</script>
